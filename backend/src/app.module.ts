@@ -2,6 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Pokemon } from './pokemon/pokemon.entity';
+import { User } from './users/users.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { PokemonModule } from './pokemon/pokemon.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -16,10 +23,16 @@ import { Pokemon } from './pokemon/pokemon.entity';
         username: config.get('DB_USERNAME'),
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
-        entities: [Pokemon],
+        entities: [Pokemon, User],
         synchronize: true, // Dev mode
       }),
     }),
+    AuthModule,
+    UsersModule,
+    PokemonModule,
+    FavoritesModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
