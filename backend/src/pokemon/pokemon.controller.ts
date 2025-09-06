@@ -12,4 +12,9 @@ export class PokemonController {
   ) {
     return this.pokemonService.findAll(Number(page), Number(limit));
   }
+
+  @Get('search')
+  searchPokemon(@Query('name') name: string) {
+    return this.pokemonService.findByName(name);
+  }
 }

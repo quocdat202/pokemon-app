@@ -12,7 +12,6 @@ export const usePokemon = () => {
       try {
         setLoading(true);
         const data = await apiService.getAllPokemon();
-        console.log("🤔🤔🤔 ~ fetchPokemon ~ data:", data);
         setPokemon(data);
         setError(null);
       } catch (err) {
@@ -22,7 +21,6 @@ export const usePokemon = () => {
         setLoading(false);
       }
     };
-
     fetchPokemon();
   }, []);
 
@@ -52,7 +50,7 @@ export const usePokemon = () => {
 export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("auth_token")
+    typeof window !== "undefined" ? localStorage.getItem("auth_token") : null
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,8 +62,10 @@ export const useAuth = () => {
       const response: AuthResponse = await apiService.login(username, password);
       setUser(response.user);
       setToken(response.access_token);
-      localStorage.setItem("auth_token", response.access_token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("auth_token", response.access_token);
+        localStorage.setItem("user", JSON.stringify(response.user));
+      }
     } catch (err) {
       setError("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
       console.error("Login error:", err);
@@ -96,15 +96,19 @@ export const useAuth = () => {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("user");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user");
+    }
   };
 
   // Khôi phục user từ localStorage khi component mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser && token) {
-      setUser(JSON.parse(savedUser));
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser && token) {
+        setUser(JSON.parse(savedUser));
+      }
     }
   }, [token]);
 
@@ -128,7 +132,6 @@ export const useFavorites = (token: string | null) => {
 
   const fetchFavorites = useCallback(async () => {
     if (!token) return;
-
     try {
       setLoading(true);
       const data = await apiService.getFavorites(token);
@@ -144,7 +147,6 @@ export const useFavorites = (token: string | null) => {
 
   const addFavorite = async (pokemonId: number) => {
     if (!token) return;
-
     try {
       await apiService.addFavorite(pokemonId, token);
       // Refresh favorites list
@@ -157,7 +159,6 @@ export const useFavorites = (token: string | null) => {
 
   const removeFavorite = async (pokemonId: number) => {
     if (!token) return;
-
     try {
       await apiService.removeFavorite(pokemonId, token);
       // Refresh favorites list

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Pokemon } from './pokemon.entity';
 
 @Injectable()
@@ -16,5 +16,12 @@ export class PokemonService {
       take: limit,
     });
     return { data, total };
+  }
+
+  async findByName(name: string) {
+    const data = await this.pokemonRepo.find({
+      where: { name: ILike(`%${name}%`) },
+    });
+    return { data, total: data.length };
   }
 }

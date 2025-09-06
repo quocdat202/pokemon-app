@@ -8,7 +8,7 @@ interface PokemonCardProps {
   isAuthenticated?: boolean;
 }
 
-export const PokemonCard: React.FC<PokemonCardProps> = ({
+const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   onFavorite,
   isFavorite = false,
@@ -54,9 +54,11 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
             fontSize: "12px",
           }}
         >
-          {isFavorite ? "❤️ Bỏ yêu thích" : "🤍 Yêu thích"}
+          {isFavorite ? "❤️ Bỏ yêu thích" : "🧡 Yêu thích"}
         </button>
       )}
     </div>
   );
 };
+
+export default PokemonCard;

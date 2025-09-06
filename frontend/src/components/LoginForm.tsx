@@ -7,7 +7,7 @@ interface LoginFormProps {
   error: string | null;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({
+const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   onRegister,
   loading,
@@ -126,3 +126,5 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     </form>
   );
 };
+
+export default LoginForm;

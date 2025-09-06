@@ -21,7 +21,7 @@ FRONTEND_PID=$!
 
 echo "✅ Đã khởi động thành công!"
 echo "🌐 Backend: http://localhost:3000"
-echo "🖥️  Frontend: http://localhost:3001"
+echo "🖥️  Frontend: http://localhost:8000"
 echo ""
 echo "Nhấn Ctrl+C để dừng cả hai services..."
 

@@ -6,7 +6,7 @@ async function bootstrap() {
 
   // Cấu hình CORS để frontend có thể gọi API
   app.enableCors({
-    origin: 'http://localhost:3001', // URL của React app (chạy trên port 3002)
+    origin: 'http://localhost:8000', // URL của React app (chạy trên port 8000)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   });
